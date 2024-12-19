@@ -1,6 +1,6 @@
 ---
 title: "Process Injection Parte 1: Inyección Remota Básica"
-date: 26-07-2024 00:00:00 +0800
+date: 19-12-2024 00:00:00 +0800
 categories: [Malware, Process Injection]
 tags: [malware, Process Injection]
 author: 0xB3L14L
