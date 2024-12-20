@@ -2,7 +2,7 @@
 title: "Process Injection Parte 1: Inyección Remota Básica"
 date: 19-12-2024 00:00:00 +0800
 categories: [Malware, Process Injection]
-tags: [malware, Process Injection]
+tags: [red]
 author: 0xB3L14L
 description: Primera parte de esta serie de Inyección de Proceso, donde se mostrará una simple inyección con las funciones VirtuAllocEx, WriteProcessMemory, y CreateRemoteThread del WinAPI. Siendo esto la base para las técnicas futuras.
 lang: es

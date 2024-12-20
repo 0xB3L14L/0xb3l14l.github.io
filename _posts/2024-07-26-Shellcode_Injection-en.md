@@ -2,7 +2,7 @@
 title: "Process Injection Part 1: Basic Remote Injection"
 date: 26-07-2024 00:00:00 +0800
 categories: [Malware, Process Injection]
-tags: [malware, Process Injection]
+tags: [red]
 author: 0xB3L14L
 description: The first part of this Process Injection series, where a simple injection will be demonstrated using the WinAPI functions VirtualAllocEx, WriteProcessMemory, and CreateRemoteThread. This serves as the foundation for future techniques
 lang: en
