@@ -2,7 +2,7 @@
 title: "CyberDefenders - Tomcat Takeover - Easy"
 date: 09-12-2024 00:00:00 +0800
 categories: [CTF, Cyberdefenders, Network Forensics]
-tags: [Easy]
+tags: [CTF, Blue Team, Wireshark]
 author: 0xB3L14L
 description: Analizar el tráfico de red a un servidor web de Apache Tomcat por actividades maliciosas detectadas.
 lang: es
