@@ -8,7 +8,7 @@ description: Machine focused on Active Directory attacks, port forwarding, and e
 lang: en
 permalink: /posts/Infiltrator
 image:
-  path: /Media/Images/Infiltrator/Infiltrator.webp
+  path: /Media/Images/Infiltrator/Infiltrator.png
 ---
 
 To solve this machine, it is recommended to have Windows.
