@@ -8,7 +8,7 @@ description: Máquina centrada en ataques de Active Directory, port forwarding, 
 lang: es
 permalink: /posts/Infiltrator
 image:
-  path: /Media/Images/Infiltrator/Infiltrator.png
+  path: /Media/Images/Infiltrator/infiltrator.png
 ---
 
 Para poder resolver está máquina, es recomendado tener un windows.
