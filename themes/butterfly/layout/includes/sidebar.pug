@@ -1,0 +1,22 @@
+if theme.menu
+  #sidebar
+    #menu-mask
+    #sidebar-menus
+      .avatar-img.text-center
+        img(src=url_for(theme.avatar.img) onerror=`this.onerror=null;this.src='${url_for(theme.error_img.flink)}'` alt="avatar")
+      - const currentLangForSidebar = (page && (page.lang || '').toLowerCase()) || 'es'
+      .site-data.text-center
+        - const archivesLink = currentLangForSidebar === 'en' ? `/en/${config.archive_dir}/` : `/${config.archive_dir}/`
+        a(href=url_for(archivesLink))
+          .headline= _p('aside.articles')
+          .length-num= site.posts.length
+        - const tagsLink = currentLangForSidebar === 'en' ? `/en/${config.tag_dir}/` : `/${config.tag_dir}/`
+        a(href=url_for(tagsLink))
+          .headline= _p('aside.tags')
+          .length-num= site.tags.length
+        - const categoriesLink = currentLangForSidebar === 'en' ? `/en/${config.category_dir}/` : `/${config.category_dir}/`
+        a(href=url_for(categoriesLink))
+          .headline= _p('aside.categories')
+          .length-num= site.categories.length
+
+      != partial('includes/header/menu_item', {}, { cache: true })

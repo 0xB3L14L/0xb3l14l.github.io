@@ -1,0 +1,21 @@
+extends includes/layout.pug
+
+block content
+  - const currentLang = page.lang || 'es'
+  - const allPostsArray = site.posts && site.posts.toArray ? site.posts.toArray() : (site.posts.data || [])
+  - const filteredPosts = allPostsArray.filter(p => {
+  -   const postLang = (p.lang || 'es').toString().toLowerCase()
+  -   const postPath = (p.path || '').toString()
+  -   if (currentLang === 'en') {
+  -     return postLang === 'en' || postPath.startsWith('en/')
+  -   }
+  -   return postLang !== 'en' && !postPath.startsWith('en/')
+  - })
+  - const originalPosts = page.posts
+  - page.posts = { data: filteredPosts }
+  include ./includes/mixins/indexPostUI.pug
+  +indexPostUI
+  - page.posts = originalPosts
+
+
+
