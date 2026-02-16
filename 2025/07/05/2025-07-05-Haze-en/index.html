@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="[&quot;es&quot;,&quot;en&quot;,&quot;default&quot;]" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Haze [HARD] | B3l14l</title><meta name="author" content="0xb3l14l"><meta name="copyright" content="0xb3l14l"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="Machine about enumeration and exploitation of Splunk, attacks on gMSA, ACL abuse, and privilege escalation with SeImpersonatePrivilege">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Haze [HARD]">
+<meta property="og:url" content="https://0xb3l14l.github.io/2025/07/05/2025-07-05-Haze-en/index.html">
+<meta property="og:site_name" content="B3l14l">
+<meta property="og:description" content="Machine about enumeration and exploitation of Splunk, attacks on gMSA, ACL abuse, and privilege escalation with SeImpersonatePrivilege">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0xb3l14l.github.io/img/Haze/haze-background.png">
+<meta property="article:published_time" content="2025-07-05T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-02T02:13:11.310Z">
+<meta property="article:author" content="0xb3l14l">
+<meta property="article:tag" content="HTB">
+<meta property="article:tag" content="Active Directory">
+<meta property="article:tag" content="Hard">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0xb3l14l.github.io/img/Haze/haze-background.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Haze [HARD]",
+  "url": "https://0xb3l14l.github.io/2025/07/05/2025-07-05-Haze-en/",
+  "image": "https://0xb3l14l.github.io/img/Haze/haze-background.png",
+  "datePublished": "2025-07-05T04:00:00.000Z",
+  "dateModified": "2026-02-02T02:13:11.310Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "0xb3l14l",
+      "url": "https://github.com/0xB3L14L"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://0xb3l14l.github.io/2025/07/05/2025-07-05-Haze-en/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"No se encontraron resultados para: ${query}","hits_stats":"${hits} artículos encontrados"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copiado con éxito',
+    error: 'Error al copiar',
+    noSupport: 'Navegador no soportado'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Justo ahora',
+    min: 'minutos',
+    hour: 'horas',
+    day: 'días',
+    month: 'meses'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Cargar más'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Haze [HARD]',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/back.png);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/en/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/en/tags/"><div class="headline">Tags</div><div class="length-num">10</div></a><a href="/en/categories/"><div class="headline">Categories</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa-solid fa-language"></i><span> Language</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-globe"></i><span> Español</span></a></li><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-globe"></i><span> English</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Haze/haze-background.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/en/"><span class="site-name">B3l14l</span></a><a class="nav-page-title" href="/en/"><span class="site-name">Haze [HARD]</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/en/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa-solid fa-language"></i><span> Language</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/"><i class="fa-fw fas fa-globe"></i><span> Español</span></a></li><li><a class="site-page child" href="/en/"><i class="fa-fw fas fa-globe"></i><span> English</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Haze [HARD]</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-07-05T04:00:00.000Z" title="Created 2025-07-05 00:00:00">2025-07-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-02-02T02:13:11.310Z" title="Updated 2026-02-01 23:13:11">2026-02-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/HTB/">HTB</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/HTB/Active-Directory/">Active Directory</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/HTB/Active-Directory/Hard/">Hard</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="Initial-Enumeration"><a href="#Initial-Enumeration" class="headerlink" title="Initial Enumeration"></a>Initial Enumeration</h2><p>It starts with a scan using nmap.</p>
+<p><img src="/img/Haze/nmap.png" alt="nmap"></p>
+<p>Apart from showing common ports, the domain <strong>haze.htb</strong> and the subdomain <strong>dc01.haze.htb</strong> are present. There are some ports that stand out.</p>
+<p><img src="/img/Haze/nmap-splunk.png" alt="nmap-splunk"></p>
+<p>It shows that Splunk is running; by accessing the web interface, the version of Splunk can be seen.</p>
+<p><img src="/img/Haze/splunk-version.png" alt="splunk-version"></p>
+<p>The version is <strong>9.2.1</strong>, and it is a version vulnerable to a path traversal.</p>
+<h2 id="CVE-2024-36991-Path-Traversal"><a href="#CVE-2024-36991-Path-Traversal" class="headerlink" title="CVE-2024-36991 (Path Traversal)"></a>CVE-2024-36991 (Path Traversal)</h2><p>The vulnerability is located at the following path: <strong><a target="_blank" rel="noopener" href="http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C:../C:../C:../">http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C:../C:../C:../</a></strong></p>
+<p>With this exploit, the goal is to search for credentials within Splunk; a possible path is <strong>&#x2F;etc&#x2F;passwd</strong>.</p>
+<p><img src="/img/Haze/creds1.png" alt="creds1"></p>
+<p>These creds are obtained, but unfortunately, there was no luck trying to crack them with hashcat.</p>
+<p>However, Splunk has several configuration files that handle authentication, and the most important one is <strong>authentication.conf</strong>. This file is located in <strong>$SPLUNK_HOME&#x2F;etc&#x2F;system&#x2F;default</strong>, which has the default configurations; there is another one in <strong>$SPLUNK_HOME&#x2F;etc&#x2F;system&#x2F;local</strong> that contains modifications to the configuration file to prevent editing the default configurations.</p>
+<p>To summarize:</p>
+<ul>
+<li>$SPLUNK_HOME&#x2F;etc&#x2F;system&#x2F;default&#x2F;authentication.conf - <strong>Not edited</strong></li>
+<li>$SPLUNK_HOME&#x2F;etc&#x2F;system&#x2F;local&#x2F;authentication.conf - <strong>Edited</strong></li>
+</ul>
+<p>Then it directs to this file. <strong><a target="_blank" rel="noopener" href="http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C:../C:../C:../C:../C:../C:/Program">http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C:../C:../C:../C:../C:../C:/Program</a> Files&#x2F;Splunk&#x2F;etc&#x2F;system&#x2F;local&#x2F;authentication.conf</strong></p>
+<p><img src="/img/Haze/splunk-conf.png" alt="conf"></p>
+<p>A domain user appears, along with their encrypted password.</p>
+<p>This password was encrypted by Splunk, and to decrypt it, the encryption key located in the <strong>splunk.secret</strong> file is needed.</p>
+<p><em><strong><a target="_blank" rel="noopener" href="http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C:../C:../C:../C:../C:../C:/Program">http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C:../C:../C:../C:../C:../C:/Program</a> Files&#x2F;Splunk&#x2F;etc&#x2F;auth&#x2F;splunk.secret</strong></em></p>
+<p><img src="/img/Haze/secret1.png" alt="secret1"></p>
+<p>This is the master key. The following tool called <a target="_blank" rel="noopener" href="https://github.com/HurricaneLabs/splunksecrets">splunksecrets</a> can be used to decrypt the password.</p>
+<p><img src="/img/Haze/secret2.png" alt="secret2"></p>
+<p>To find out what the username of the user is, the <strong>username-anarchy</strong> tool can be used to create a list of users with the found name.</p>
+<p><img src="/img/Haze/anarchy.png" alt="anarchy"></p>
+<p>The credentials are: <strong>paul.taylor</strong> and <strong>Ld@p_Auth_Sp1unk@2k24</strong>.</p>
+<h2 id="Enumeration-Paul-Taylor"><a href="#Enumeration-Paul-Taylor" class="headerlink" title="Enumeration - Paul.Taylor"></a>Enumeration - Paul.Taylor</h2><p>With this user, I tried to perform enumeration with bloodhound, but having few privileges, nothing important was found. Therefore, a password spray was conducted.</p>
+<h3 id="Password-Spray"><a href="#Password-Spray" class="headerlink" title="Password Spray"></a>Password Spray</h3><p>First, the users were enumerated with netexec.</p>
+<p><img src="/img/Haze/user-enum.png" alt="users-enum"></p>
+<p>And then, the password spray.</p>
+<p><img src="/img/Haze/spray.png" alt="spray"></p>
+<p>The user <strong>mark.adams</strong> has the same password.</p>
+<h2 id="Enumeration-Mark-Adams"><a href="#Enumeration-Mark-Adams" class="headerlink" title="Enumeration - Mark.Adams"></a>Enumeration - Mark.Adams</h2><p>With this user, a good enumeration can be done with bloodhound. This user belongs to two interesting groups: <strong>REMOTE MANAGEMENT USERS</strong> and <strong>GMSA_MANAGERS</strong>.</p>
+<p><img src="/img/Haze/mark.png" alt="mark"></p>
+<p>This means that one can first log in with winrm, but more importantly, that they can manage the gMSA (Group Managed Service Accounts).</p>
+<p>The gMSA is used to simplify the handling and administration of service accounts, and among its various functions is the management of passwords.</p>
+<h3 id="Attack-on-gMSA"><a href="#Attack-on-gMSA" class="headerlink" title="Attack on gMSA"></a>Attack on gMSA</h3><p>There are different types of attacks with gMSA, but in this case, it will be to read the password stored in the <strong>msDS-ManagedPassword</strong> attribute.</p>
+<p>To read it, the tool <a target="_blank" rel="noopener" href="https://github.com/micahvandeusen/gMSADumper">gMSADumper</a> will be used, and the target will be the machine found <strong>HAZE-IT-BACKUP$</strong>.</p>
+<p><img src="/img/Haze/dumper.png" alt="dumper"></p>
+<p>The tool’s output indicates that only <strong>Domain Admins</strong> can read the password. By connecting to the machine and using the <strong>Get-ADServiceAccount</strong> cmdlet, this is confirmed.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-ADServiceAccount</span> <span class="literal">-Identity</span> <span class="string">&quot;Haze-IT-Backup<span class="variable">$</span>&quot;</span> <span class="literal">-Properties</span> PrincipalsAllowedToRetrieveManagedPassword </span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Haze/gmsa1.png" alt="gmsa"></p>
+<p>But belonging to the <strong>GMSA_MANAGERS</strong> group, the user mark.adams decides who can perform this action. So it is changed.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Set-ADServiceAccount</span> <span class="literal">-Identity</span> <span class="string">&quot;Haze-IT-Backup<span class="variable">$</span>&quot;</span> <span class="literal">-PrincipalsAllowedToRetrieveManagedPassword</span> <span class="string">&quot;mark.adams&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/Haze/gmsa2.png" alt="gmsa2"></p>
+<p>Now the password can be recovered, which is the NT hash.</p>
+<p><img src="/img/Haze/dumper2.png" alt="dumper2"></p>
+<h2 id="Enumeration-HAZE-IT-BACKUP"><a href="#Enumeration-HAZE-IT-BACKUP" class="headerlink" title="Enumeration - HAZE-IT-BACKUP$"></a>Enumeration - HAZE-IT-BACKUP$</h2><p>Re-running an enumeration with bloodhound-python shows that:</p>
+<p>It has the <strong>WriteOwner</strong> permission over the <strong>SUPPORT_SERVICES</strong> group.</p>
+<p><img src="/img/Haze/writeowner.png" alt="writeowner"></p>
+<p>And this group has <strong>ForceChangePassword</strong> and <strong>AddKeyCredentialLink</strong> over the user <strong>edward.martin</strong>.</p>
+<p>The logic of the attack would be as follows:</p>
+<ul>
+<li>I add the machine <strong>HAZE-IT-BACKUP$</strong> as the owner of the group</li>
+<li>Being the owner of the group, I grant myself the <strong>FullControl</strong> permission.</li>
+<li>Having full control of the group, I add the machine to the group.</li>
+<li>Now being a member of the group, the machine obtains both permissions. Therefore, a password change can be performed, or a Shadow Credentials attack can be executed.</li>
+</ul>
+<h3 id="ACL-Abuse-WriteOwner"><a href="#ACL-Abuse-WriteOwner" class="headerlink" title="ACL Abuse - WriteOwner"></a>ACL Abuse - WriteOwner</h3><p>Let’s start by changing the owner of the group.</p>
+<p><img src="/img/Haze/owner.png" alt="owner"></p>
+<p>Now, grant the FullControl permission.</p>
+<p><img src="/img/Haze/fullcontrol.png" alt="fullcontrol"></p>
+<p>Then, add the machine to the group.</p>
+<p><img src="/img/Haze/add.png" alt="add"></p>
+<p>Now, the user <strong>edward.martin</strong> can be compromised; from my point of view, it is more convenient to carry out the Shadow Credential attack than to change the user’s password.</p>
+<h3 id="ACL-Abuse-AddKeyCredentialLink-Shadow-Credentials"><a href="#ACL-Abuse-AddKeyCredentialLink-Shadow-Credentials" class="headerlink" title="ACL Abuse - AddKeyCredentialLink (Shadow Credentials)"></a>ACL Abuse - AddKeyCredentialLink (Shadow Credentials)</h3><p>To obtain the shadow credential, it can be done remotely with <strong>certipy</strong>.</p>
+<p><img src="/img/Haze/shadow.png" alt="shadow"></p>
+<p>And the NT Hash of the user is obtained.</p>
+<h2 id="Enumeration-Edward-Martin"><a href="#Enumeration-Edward-Martin" class="headerlink" title="Enumeration: Edward.Martin"></a>Enumeration: Edward.Martin</h2><p>Enumerating this user shows that they belong to the <strong>BACKUP_REVIEWERS</strong> group.</p>
+<p><img src="/img/Haze/reviewer.png" alt="reviewer"></p>
+<p>No exploitable permissions were found, so upon internal enumeration, a directory called <strong>Backup</strong> is found.</p>
+<p><img src="/img/Haze/backup.png" alt="backup"></p>
+<p>And the user <strong>edward.martin</strong> can access the directory. Inside, there is a compressed file; it appears a backup of the Splunk files was made.</p>
+<p><img src="/img/Haze/zip.png" alt="zip"></p>
+<h2 id="Splunk-Backup"><a href="#Splunk-Backup" class="headerlink" title="Splunk Backup"></a>Splunk Backup</h2><p>After bringing it to Kali and decompressing it, all the Splunk files are recovered. Encrypted credentials can be searched for, and one is found.</p>
+<p><img src="/img/Haze/creds.png" alt="creds"></p>
+<p>Upon reading the file, it is discovered that these credentials belong to the user <strong>alexander.green</strong>.</p>
+<p><img src="/img/Haze/auth.png" alt="auth"></p>
+<p>The same initial process is performed; the password is decrypted with the master key present in the splunk.secret file. However, it must be the file present in the backup, as this was used to encrypt the password.</p>
+<p><img src="/img/Haze/alex.png" alt="alex"></p>
+<h2 id="Enumeration-Alexander-Green"><a href="#Enumeration-Alexander-Green" class="headerlink" title="Enumeration - Alexander.Green"></a>Enumeration - Alexander.Green</h2><p>The user <strong>alexander.green</strong> belongs to the group <strong>SPLUNK_ADMINS</strong>.</p>
+<p><img src="/img/Haze/alex-groups.png" alt="groups"></p>
+<p>In other words, he is an admin in Splunk.</p>
+<p><img src="/img/Haze/admin.png" alt="admin"></p>
+<p>As an admin, a reverse shell can be obtained using the following tool: <a target="_blank" rel="noopener" href="https://github.com/0xjpuff/reverse_shell_splunk">reverse_shell_splunk</a>.</p>
+<p><img src="/img/Haze/upload.png" alt="upload"></p>
+<p>After uploading it, the connection is received.</p>
+<p><img src="/img/Haze/rev.png" alt="rev"></p>
+<p>Upon checking the user’s privileges, it shows that he has the privilege <strong>SeImpersonatePrivilege</strong> and it is enabled.</p>
+<h2 id="SeImpersonatePrivilege-PetitPotato"><a href="#SeImpersonatePrivilege-PetitPotato" class="headerlink" title="SeImpersonatePrivilege (PetitPotato)"></a>SeImpersonatePrivilege (PetitPotato)</h2><p>For privilege escalation, <a target="_blank" rel="noopener" href="https://github.com/wh0amitz/PetitPotato">PetitPotato</a> was used.</p>
+<p>In addition to uploading the exploit, a reverse shell created with msfvenom was also uploaded.</p>
+<p>And when executed.</p>
+<p><img src="/img/Haze/privesc.png" alt="privesc"></p>
+<p>Administrator privileges are obtained.</p>
+<p><img src="/img/Haze/pwn.png" alt="pwn"></p>
+<p>The machine was compromised, and the root flag can be read.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/0xB3L14L">0xb3l14l</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://0xb3l14l.github.io/2025/07/05/2025-07-05-Haze-en/">https://0xb3l14l.github.io/2025/07/05/2025-07-05-Haze-en/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/HTB/">HTB</a><a class="post-meta__tags" href="/tags/Active-Directory/">Active Directory</a><a class="post-meta__tags" href="/tags/Hard/">Hard</a></div><div class="post-share"><div class="social-share" data-image="/img/Haze/haze-background.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/07/05/2025-07-05-Haze/" title="Haze [HARD]"><img class="cover" src="/img/Haze/haze-background.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Haze [HARD]</div></div><div class="info-2"><div class="info-item-1">Enumeración InicialSe inicia con un escaneo con nmap.  Aparte de mostrar los puertos comunes, y el dominio haze.htb y el subdominio dc01.haze.htb. Hay unos puertos que destacan.  Muestra que se está ejecutando splunk, al acceder a la interfaz web se puede ver la versión del splunk.  La versión es 9.2.1, y es una versión vulnerable a un path traversal. CVE-2024-36991 (Path Traversal)La vulnerabilidad se encuentra en la siguiente ruta: http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C...</div></div></div></a><a class="pagination-related" href="/2024/12/19/2024-12-19-Shellcode_Injection/" title="Process Injection Parte 1: Inyección Remota Básica"><img class="cover" src="/img/Process-Injection-Shellcode/Remote_Process_Injection.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">Process Injection Parte 1: Inyección Remota Básica</div></div><div class="info-2"><div class="info-item-1">La Inyección de Proceso es una técnica que se utiliza para inyectar un payload en la memoria de un proceso, este payload puede ser un shellcode o un DLL. Esta técnica tiene tres pasos fundamentales:  Asignar un espacio en la memoria (buffer). Escribir el payload en el buffer. Ejecutar el payload.  Estos tres pasos sirven para hacer una inyección local, y dependiendo de la subtécnica de inyección se aumentarán los pasos. Para hacer la inyección a un proceso remoto se debe realizar los siguient...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/07/05/2025-07-05-Haze/" title="Haze [HARD]"><img class="cover" src="/img/Haze/haze-background.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-05</div><div class="info-item-2">Haze [HARD]</div></div><div class="info-2"><div class="info-item-1">Enumeración InicialSe inicia con un escaneo con nmap.  Aparte de mostrar los puertos comunes, y el dominio haze.htb y el subdominio dc01.haze.htb. Hay unos puertos que destacan.  Muestra que se está ejecutando splunk, al acceder a la interfaz web se puede ver la versión del splunk.  La versión es 9.2.1, y es una versión vulnerable a un path traversal. CVE-2024-36991 (Path Traversal)La vulnerabilidad se encuentra en la siguiente ruta: http://10.10.11.61:8000/en-US/modules/messaging/C:../C:../C...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">0xb3l14l</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Artículos</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Etiquetas</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">Categorías</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/0xB3L14L"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/0xB3L14L" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:je.bustamantemon@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://www.linkedin.com/in/jorge-bustamante-montoya/" target="_blank" title=""><i class="fab fa-linkedin"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Initial-Enumeration"><span class="toc-number">1.</span> <span class="toc-text">Initial Enumeration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CVE-2024-36991-Path-Traversal"><span class="toc-number">2.</span> <span class="toc-text">CVE-2024-36991 (Path Traversal)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumeration-Paul-Taylor"><span class="toc-number">3.</span> <span class="toc-text">Enumeration - Paul.Taylor</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Password-Spray"><span class="toc-number">3.1.</span> <span class="toc-text">Password Spray</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumeration-Mark-Adams"><span class="toc-number">4.</span> <span class="toc-text">Enumeration - Mark.Adams</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Attack-on-gMSA"><span class="toc-number">4.1.</span> <span class="toc-text">Attack on gMSA</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumeration-HAZE-IT-BACKUP"><span class="toc-number">5.</span> <span class="toc-text">Enumeration - HAZE-IT-BACKUP$</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ACL-Abuse-WriteOwner"><span class="toc-number">5.1.</span> <span class="toc-text">ACL Abuse - WriteOwner</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ACL-Abuse-AddKeyCredentialLink-Shadow-Credentials"><span class="toc-number">5.2.</span> <span class="toc-text">ACL Abuse - AddKeyCredentialLink (Shadow Credentials)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumeration-Edward-Martin"><span class="toc-number">6.</span> <span class="toc-text">Enumeration: Edward.Martin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Splunk-Backup"><span class="toc-number">7.</span> <span class="toc-text">Splunk Backup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enumeration-Alexander-Green"><span class="toc-number">8.</span> <span class="toc-text">Enumeration - Alexander.Green</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SeImpersonatePrivilege-PetitPotato"><span class="toc-number">9.</span> <span class="toc-text">SeImpersonatePrivilege (PetitPotato)</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Artículos recientes</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/02/14/2026-02-14-Retro-en/" title="Retro"><img src="/img/Retro/retro-0.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Retro"/></a><div class="content"><a class="title" href="/2026/02/14/2026-02-14-Retro-en/" title="Retro">Retro</a><time datetime="2026-02-15T02:10:00.000Z" title="Creado 2026-02-14 23:10:00">2026-02-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/14/2026-02-14-Retro/" title="Retro"><img src="/img/Retro/retro-0.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Retro"/></a><div class="content"><a class="title" href="/2026/02/14/2026-02-14-Retro/" title="Retro">Retro</a><time datetime="2026-02-15T02:10:00.000Z" title="Creado 2026-02-14 23:10:00">2026-02-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/13/2026-02-13-Hybrid-en/" title="Hybrid"><img src="/img/Hybrid/hybrid_slide.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hybrid"/></a><div class="content"><a class="title" href="/2026/02/13/2026-02-13-Hybrid-en/" title="Hybrid">Hybrid</a><time datetime="2026-02-13T03:00:00.000Z" title="Creado 2026-02-13 00:00:00">2026-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/13/2026-02-13-Hybrid/" title="Hybrid"><img src="/img/Hybrid/hybrid_slide.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hybrid"/></a><div class="content"><a class="title" href="/2026/02/13/2026-02-13-Hybrid/" title="Hybrid">Hybrid</a><time datetime="2026-02-13T03:00:00.000Z" title="Creado 2026-02-13 00:00:00">2026-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/13/2026-02-13-Trusted-en/" title="Trusted"><img src="/img/Trusted/trusted_slide.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Trusted"/></a><div class="content"><a class="title" href="/2026/02/13/2026-02-13-Trusted-en/" title="Trusted">Trusted</a><time datetime="2026-02-13T03:00:00.000Z" title="Creado 2026-02-13 00:00:00">2026-02-13</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/top4.png);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 0xb3l14l</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Tema </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Buscar</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Cargando base de datos</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Buscar..." type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
